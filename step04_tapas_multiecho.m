@@ -14,17 +14,17 @@ CLUSTER = 0;
 main_dir_physio = '/network/lustre/iss01/cenir/analyse/irm/users/benoit.beranger/CUSPEX/DICOM';
 e_physio = exam(main_dir_physio, 's12'); % all subjects with multi-echo
 e_physio.addSerie('_PhysioLog$','physio')
-e_physio.getSerie('physio').addVolume('dcm$','dcm',1)
+% e_physio.getSerie('physio').addVolume('dcm$','dcm',1)
 
-e_physio.getSerie('physio').addVolume('Info.log$','info',1)
-e_physio.getSerie('physio').addVolume('PULS.log$','puls',1)
-e_physio.getSerie('physio').addVolume('RESP.log$','resp',1)
+e_physio.getSerie('physio').addPhysio('Info.log$','info',1)
+e_physio.getSerie('physio').addPhysio('PULS.log$','puls',1)
+e_physio.getSerie('physio').addPhysio('RESP.log$','resp',1)
 
-% e_physio.explore
+e_physio.explore
 
-info = e_physio.getSerie('physio').getVolume('info').getPath';
-puls = e_physio.getSerie('physio').getVolume('puls').getPath';
-resp = e_physio.getSerie('physio').getVolume('resp').getPath';
+info = e_physio.getSerie('physio').getPhysio('info');
+puls = e_physio.getSerie('physio').getPhysio('puls');
+resp = e_physio.getSerie('physio').getPhysio('resp');
 
 
 %% Prepare dirs & files
@@ -45,14 +45,14 @@ job_afni_remove_nan( run.getVolume('^wts_OC'), par );
 
 %%
 
-volume = run.getVolume('^nwts_OC').removeEmpty.toJob(0);
+volume = run.getVolume('^nwts_OC');
+outdir = volume.getDir;
 
-outdir = get_parent_path(volume);
+run.addRP('tedana','rp_spm.txt','rp',1);
+rp = run.getRP('rp');
 
-rp     = fullfile(outdir,'rp_spm.txt');
+mask   = run.getExam.getSerie('anat').getVolume('^rwp[23]');
 
-tmp = [run.getVolume('^nwts_OC').exam]';
-mask   = tmp.getSerie('anat').getVolume('^rwp[23]').toJob(0);
 
 
 %%

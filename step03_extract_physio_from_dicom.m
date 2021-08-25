@@ -11,7 +11,7 @@ e.addSerie('PhysioLog$','physio')
 
 e.getSerie('physio').addVolume('dcm$','dcm',1)
 
-physio_file = e.getSerie('physio').getVolume('dcm').getPath';
+physio_file = e.getSerie('physio').getVolume('dcm').getPath;
 
 for f = 1 : length(physio_file)
     
