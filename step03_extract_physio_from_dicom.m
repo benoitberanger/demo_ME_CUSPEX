@@ -9,12 +9,12 @@ e = exam(main_dir, 's12'); % all subjects with multi-echo
 
 e.addSerie('PhysioLog$','physio')
 
-e.getSerie('physio').addVolume('dcm$','dcm',1)
+e.getSerie('physio').addPhysio('dcm$','dcm',1)
 
-physio_file = e.getSerie('physio').getVolume('dcm').getPath;
+e.getSerie('physio').getPhysio('dcm').extract()
 
-for f = 1 : length(physio_file)
-    
-    extractCMRRPhysio(physio_file{f})
+e.getSerie('physio').addPhysio('Info.log$','physio_info',1)
+e.getSerie('physio').addPhysio('PULS.log$','physio_puls',1)
+e.getSerie('physio').addPhysio('RESP.log$','physio_resp',1)
 
-end 
+e.getSerie('physio').getPhysio('physio').check()
